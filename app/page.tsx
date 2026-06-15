@@ -189,6 +189,9 @@ const weekRows = rows.filter(
   (r: any) => r.week_number === selectedWeek
 )
 
+console.log('rows:', rows.length)
+console.log('weekRows:', weekRows.length)
+
   const subjects = [
   ...new Set(weekRows.map((r) => r.subject))
 ]
@@ -242,7 +245,8 @@ const completedItems =
         </button>
       </div>
 
-      <div
+      {activeTab !== 'monthly' && (
+<div
   style={{
     marginBottom: '20px',
   }}
@@ -272,6 +276,7 @@ const completedItems =
     <option value={8}>Week 8</option>
   </select>
 </div>
+      )}
 
 {activeTab === 'daily' && (
   <>
@@ -392,10 +397,20 @@ const completedItems =
   </label>
 
   <button
-    onClick={() => deleteItem(item.id)}
-  >
-    ❌
-  </button>
+  onClick={() =>
+    deleteItem(item.id)
+  }
+  style={{
+    marginLeft: '10px',
+    border: 'none',
+    background: 'transparent',
+    cursor: 'pointer',
+    fontSize: '16px',
+  }}
+  title="Delete"
+>
+  🗑️
+</button>
 </div>
                 </div>
               ))}
@@ -433,11 +448,17 @@ const completedItems =
 )}
 
 {activeTab === 'weekly' && (
-  <WeeklyView />
+  <WeeklyView
+    rows={weekRows}
+    selectedWeek={selectedWeek}
+  />
 )}
 
 {activeTab === 'monthly' && (
-  <MonthlyView />
+  <>
+
+    <MonthlyView rows={rows} />
+  </>
 )}
 
     </main>
